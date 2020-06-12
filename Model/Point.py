@@ -1,9 +1,10 @@
+import math
 class Point:
 
     x = 0.0
     y = 0.0
 
-    def __init__(self, x, y):
+    def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
 
@@ -31,3 +32,6 @@ class Point:
     def getTuple(self):
         t = (self.x, self.y)
         return t
+
+    def len(self):
+        return math.sqrt(self.x*self.x + self.y*self.y)

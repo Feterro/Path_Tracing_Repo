@@ -6,6 +6,7 @@ from Model.Ray import *
 def MAINLOOP():
 
     global boolean
+
     paredes = [
         Segmento(False, [Point(450, 200), Point(450, 500)])
     ]

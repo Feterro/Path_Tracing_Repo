@@ -1,10 +1,10 @@
 from Model.Point import Point
 class Segmento:
 
-    seccion = [Point, Point]
+    seccion = [Point(), Point()]
     especularidad=False
 
-    def __init__(self,espec,puntos):
+    def __init__(self,espec=False,puntos=[Point(),Point()]):
         self.especularidad=espec
         self.seccion=puntos
 
