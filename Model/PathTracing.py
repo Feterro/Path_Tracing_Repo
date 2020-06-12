@@ -11,3 +11,4 @@ def intersectPoint(point, light=Ray(), walls=[Segmento()]):
 
 
 def distancePointWall():
+    pass
