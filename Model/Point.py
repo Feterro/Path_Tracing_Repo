@@ -24,3 +24,10 @@ class Point:
 
     def __str__(self):
         return "[ {}, {}]".format(self.x, self.y)
+
+    def getVector(self):
+        return [self.x, self.y]
+
+    def getTuple(self):
+        t = (self.x, self.y)
+        return t

@@ -1,6 +1,7 @@
+from Model.Point import Point
 class Segmento:
 
-    seccion=[]
+    seccion = [Point, Point]
     especularidad=False
 
     def __init__(self,espec,puntos):

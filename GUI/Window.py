@@ -1,6 +1,8 @@
 import pygame
 from PIL import Image
 import numpy as np
+from Model.Segmento import *
+from Model.Ray import *
 class Window:
     def __init__(self, pHeight, pWidth, pNombre):
         self.h = pHeight
@@ -25,4 +27,17 @@ class Window:
 
     def drawLine(self, Surface, color, start_pos, end_pos, width):
         pygame.draw.line(Surface, color, start_pos, end_pos, width)
+        pygame.display.flip()
+
+    def drawSegment(self, color=(0,0,0), pSegmento=Segmento(False,[Point(50,50), Point(50,100)])):
+        pygame.draw.line(self.screen, color, pSegmento.getSeccion()[0].getTuple(),
+        pSegmento.getSeccion()[1].getTuple(), 5)
+        pygame.display.flip()
+
+    def drawLight(self, pRay=Ray()):
+        posicion = pRay.getPosicion().getTuple()
+        direccion = pRay.getDireccion().getTuple()
+
+        color = (255,255,255)
+        pygame.draw.line(self.screen, color, posicion, direccion, 1)
         pygame.display.flip()
