@@ -4,6 +4,7 @@ import numpy as np
 from Model.Segmento import *
 from Model.Ray import *
 class Window:
+
     def __init__(self, pHeight, pWidth, pNombre):
         self.h = pHeight
         self.w = pWidth

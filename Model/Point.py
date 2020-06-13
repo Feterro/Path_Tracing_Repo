@@ -33,5 +33,6 @@ class Point:
         t = (self.x, self.y)
         return t
 
-    def len(self):
-        return math.sqrt(self.x*self.x + self.y*self.y)
+    def makePoint(self, t, x2):
+        point = Point(self.x + t*(x2.x - self.x), self.y + t*(x2.y - self.y))
+        return point
