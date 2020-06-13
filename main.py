@@ -10,7 +10,8 @@ def MAINLOOP():
     paredes = [
         Segmento(False, [Point(450, 200), Point(450, 500)])
     ]
-    luz = Ray(pPosicion=Point(200,300), pDireccion=Point(210, 300))
+    luz = Ray(pPosicion=Point(200,300), pDireccion=Point(0, 0))
+    luz.generarDir()
     display.screen.fill((0, 0, 0))
     display.drawSegment((0,0,255),paredes[0])
     display.drawLight(luz)
