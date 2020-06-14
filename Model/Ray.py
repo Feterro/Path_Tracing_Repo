@@ -1,4 +1,4 @@
-from Model.Segmento import*
+from Model.Point import *
 import random
 
 class Ray:
@@ -11,6 +11,9 @@ class Ray:
 
     def getPosicion(self):
         return self.posicion
+
+    def setDireccion(self, pDireccion):
+        self.direccion = pDireccion
 
     def generarDir(self):
         coor=random.randint(0,1)

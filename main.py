@@ -1,19 +1,28 @@
 import threading
 import time
 from GUI.Window import Window
+from Model.Segmento import *
 from Model.Ray import *
-
+import Model.PathTracing as PT
 def MAINLOOP():
 
     global boolean
 
     paredes = [
-        Segmento(False, [Point(450, 200), Point(450, 500)])
+        Segmento(False, [Point(400, 200), Point(400, 500)]),
+        #Segmento(False, [Point(480, 200), Point(480, 500)])
     ]
-    luz = Ray(pPosicion=Point(200,300), pDireccion=Point(0, 0))
-    luz.generarDir()
+    luz = Ray(pPosicion=Point(200,300), pDireccion=Point(500, 300))
+    #luz.generarDir()
     display.screen.fill((0, 0, 0))
-    display.drawSegment((0,0,255),paredes[0])
+    point = PT.intersectPoint(luz, paredes)
+    if point is not None:
+        #luz.setDireccion(point)
+        print(point)
+    for pared in paredes:
+
+        display.drawSegment((0,0,255),pared)
+
     display.drawLight(luz)
 
     '''while True:

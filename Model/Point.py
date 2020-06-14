@@ -1,4 +1,4 @@
-import math
+
 class Point:
 
     x = 0.0
@@ -18,6 +18,9 @@ class Point:
         return Point(self.x/other, self.y/other)
 
     def dot(self, p2):
+        #v2 (x1-x2, y1-y2) => self ( )
+        #v3 (x3-x4, y3-y4) => p2 (0, -300)
+
         return (self.x*p2.x) + (self.y*p2.y)
 
     def cross(self, p2):
@@ -33,6 +36,3 @@ class Point:
         t = (self.x, self.y)
         return t
 
-    def makePoint(self, t, x2):
-        point = Point(self.x + t*(x2.x - self.x), self.y + t*(x2.y - self.y))
-        return point
