@@ -35,7 +35,7 @@ def raySegmentIntersect(ray, wall):
 
     t = v2.cross(v1) / dot
     u = v1.dot(v3) / dot
-    print("[ {}, {}, {}, {}]".format(t, u, ray.posicion, ray.direccion))
+    #print("[ {}, {}, {}, {}]".format(t, u, ray.posicion, ray.direccion))
     if t >= 0.0 and (0.0 <= u <= 1.0):
         # X de P: x1 + t(x2 - x1)
         # Y de P: y1 + t(y2 - y1)

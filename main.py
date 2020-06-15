@@ -9,23 +9,32 @@ def MAINLOOP():
     global boolean
 
     paredes = [
-        Segmento(False, [Point(400, 200), Point(400, 500)]),
-        Segmento(False, [Point(100, 200), Point(400, 200)]),
-        Segmento(False, [Point(100, 200), Point(100, 500)]),
+        Segmento(False, [Point(400, 300), Point(400, 400)]),
+        Segmento(False, [Point(200, 200), Point(400, 200)]),
+        Segmento(False, [Point(100, 200), Point(100, 450)]),
         Segmento(False, [Point(100, 500), Point(400, 500)])
     ]
-    luz = Ray(pPosicion=Point(200,300), pDireccion=Point(500, 300))
-    luz.generarDir()
+    luces = [
+
+    ]
+
     display.screen.fill((0, 0, 0))
-    point = PT.intersectPoint(luz, paredes)
-    if point is not None:
-        luz.setFinal(point)
-        print(point)
+
+    for i in range(0,360,1):
+        newRay = Ray(pPosicion=Point(250, 350))
+        newRay.generarDir()
+
+        point = PT.intersectPoint(newRay, paredes)
+        luces.append(newRay)
+        if point is not None:
+            newRay.setFinal(point)
+
     for pared in paredes:
 
         display.drawSegment((0,0,255),pared)
 
-    display.drawLight(luz)
+    for luz in luces:
+        display.drawLight(luz)
 
     '''while True:
         #display.screen.fill((255, 255, 255))
