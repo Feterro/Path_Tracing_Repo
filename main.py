@@ -10,14 +10,16 @@ def MAINLOOP():
 
     paredes = [
         Segmento(False, [Point(400, 200), Point(400, 500)]),
-        #Segmento(False, [Point(480, 200), Point(480, 500)])
+        Segmento(False, [Point(100, 200), Point(400, 200)]),
+        Segmento(False, [Point(100, 200), Point(100, 500)]),
+        Segmento(False, [Point(100, 500), Point(400, 500)])
     ]
     luz = Ray(pPosicion=Point(200,300), pDireccion=Point(500, 300))
-    #luz.generarDir()
+    luz.generarDir()
     display.screen.fill((0, 0, 0))
     point = PT.intersectPoint(luz, paredes)
     if point is not None:
-        #luz.setDireccion(point)
+        luz.setFinal(point)
         print(point)
     for pared in paredes:
 

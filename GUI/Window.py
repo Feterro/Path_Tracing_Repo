@@ -37,7 +37,7 @@ class Window:
 
     def drawLight(self, pRay=Ray()):
         posicion = pRay.getPosicion().getTuple()
-        direccion = pRay.getDireccion().getTuple()
+        direccion = pRay.getFinal().getTuple()
 
         color = (255,255,255)
         pygame.draw.line(self.screen, color, posicion, direccion, 1)
