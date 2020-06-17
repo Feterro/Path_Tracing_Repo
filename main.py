@@ -9,10 +9,19 @@ def MAINLOOP():
     global boolean
 
     paredes = [
-        Segmento(False, [Point(400, 300), Point(400, 400)]),
-        Segmento(False, [Point(200, 200), Point(400, 200)]),
-        Segmento(False, [Point(100, 200), Point(100, 450)]),
-        Segmento(False, [Point(100, 500), Point(400, 500)])
+
+        #Segmento(False, [Point(200, 400), Point(300, 200)]),
+        #Segmento(False, [Point(300, 200), Point(300, 400)]),
+        #Segmento(False, [Point(200, 400), Point(300, 400)]),
+        Segmento(False, [Point(200, 200), Point(400, 200)]),#arriba
+        Segmento(False, [Point(400, 300), Point(400, 400)]),# der
+        Segmento(False, [Point(200, 400), Point(300, 400)]),#abajo
+        Segmento(False, [Point(100, 200), Point(100, 350)]),#izq
+        Segmento(False, [Point(0, 500), Point(500, 500)]),
+        Segmento(False, [Point(500, 500), Point(500, 0)]),
+        Segmento(False, [Point(500, 0), Point(0, 0)]),
+        Segmento(False, [Point(0, 0), Point(0, 500)])
+
     ]
     luces = [
 
@@ -23,11 +32,13 @@ def MAINLOOP():
     for i in range(0,360,1):
         newRay = Ray(pPosicion=Point(250, 350))
         newRay.generarDir()
+        #newRay.setDirectionFromAngle(i)
 
         point = PT.intersectPoint(newRay, paredes)
         luces.append(newRay)
         if point is not None:
             newRay.setFinal(point)
+
 
     for pared in paredes:
 

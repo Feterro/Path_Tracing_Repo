@@ -10,9 +10,10 @@ def intersectPoint(light=Ray(), walls=[Segmento()]):
 
         point = raySegmentIntersect(light, wall)
         if point is not None:
-            dictPoints[length(point)] = point
+            dictPoints[pointsDistance(point, light.posicion)] = point
 
     if len(dictPoints) != 0:
+
         return dictPoints[min(dictPoints.keys())]
     else:
         return None

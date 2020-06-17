@@ -1,13 +1,15 @@
-from Model.Point import *
+from Model.Segmento import *
 import random
 import Model.Funtions as fun
 import math as mt
 class Ray:
+
     def __init__(self, pPosicion=Point(10, 10), pDireccion=Point(20,10)):
         self.direccion = Point()
         self.posicion = pPosicion
         self.setDireccion(pDireccion)
         self.final = Point(pPosicion.x, pPosicion.y)
+        self.largo = 500
 
     def getDireccion(self):
         return self.direccion
@@ -25,8 +27,8 @@ class Ray:
 
     def setDirectionFromAngle(self, angle):
 
-        x = mt.cos(mt.radians(angle))
-        y = mt.sin(mt.radians(angle))
+        x = mt.cos(mt.radians(-angle))
+        y = mt.sin(mt.radians(-angle))
         if x > 1:
             x = 0
         if y > 1:
@@ -35,7 +37,14 @@ class Ray:
         self.direccion = Point(x, y)
 
     def setFinal(self, pFinal):
+
         self.final = pFinal
+        largo = fun.pointsDistance(self.posicion, self.final)
+
+        if (self.largo - largo) > 0:
+            return True
+        else:
+            return False
 
     def getFinal(self):
         return self.final
@@ -60,15 +69,6 @@ class Ray:
         #Dado un rayo se genera otro por el choque con una pared
 
         pDireccion = self.direccion
-        if pDireccion.x >= 0:
-            pDireccion.x = -1 + pDireccion.x
-        else:
-            pDireccion.x = -1 - pDireccion.x
-
-        if pDireccion.y >= 0:
-            pDireccion.y = -1 + pDireccion.y
-        else:
-            pDireccion.y = -1 - pDireccion.y
 
         pPosicion = self.final
 
@@ -76,5 +76,10 @@ class Ray:
         print("{}, {}".format(pDireccion.x, pDireccion.y))
         ray = Ray(pPosicion=pPosicion)
         ray.setRealDirection(pDireccion)
+        ray.largo = self.largo
 
         return ray
+
+def reboteRayos(light=Ray(), wall=Segmento()):
+    pass
+

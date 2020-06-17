@@ -12,8 +12,8 @@ class Window:
         self.running = True
         self.border = 50
 
-        self.w = self.w + (2 * self.border)
-        self.h = self.h + (2 * self.border)
+        self.w = self.w #+ (1 * self.border)
+        self.h = self.h #+ (1 * self.border)
 
         self.screen = pygame.display.set_mode((self.w, self.h))
         pygame.display.set_caption(self.nombre)
