@@ -8,6 +8,11 @@ def MAINLOOP():
 
     global boolean
 
+    bordes=[Segmento(False, [Point(0, 500), Point(500, 500)]),
+        Segmento(False, [Point(500, 500), Point(500, 0)]),
+        Segmento(False, [Point(500, 0), Point(0, 0)]),
+        Segmento(False, [Point(0, 0), Point(0, 500)])]
+
     paredes = [
 
         #Segmento(False, [Point(200, 400), Point(300, 200)]),
@@ -23,22 +28,41 @@ def MAINLOOP():
         Segmento(False, [Point(0, 0), Point(0, 500)])
 
     ]
-    luces = [
-
-    ]
+    luces = []
+    reflejos=[]
 
     display.screen.fill((0, 0, 0))
 
-    for i in range(0,360,1):
+    for i in range(0,360,72):
         newRay = Ray(pPosicion=Point(250, 350))
-        newRay.generarDir()
-        #newRay.setDirectionFromAngle(i)
+        #newRay.generarDir()
+        newRay.setDirectionFromAngle(i)
 
         point = PT.intersectPoint(newRay, paredes)
         luces.append(newRay)
         if point is not None:
+            RayCopy=newRay;
             newRay.setFinal(point)
+            puntoRef=PT.intersectPoint(RayCopy,bordes)
+            Reflejo=Ray(pPosicion=point)
+            if(puntoRef.y==0):
+                Reflejo.setDirectionFromAngle(random.randint(181,359))
+                final=PT.intersectPoint(Reflejo, bordes) #TEMPORAL SOLO PARA VISUALIZAR LAS INTERSECCIONES EN LOS IFS SE BORRAN
+            elif(puntoRef.y==500):
+                Reflejo.setDirectionFromAngle(random.randint(1, 179))
+                final=PT.intersectPoint(Reflejo, bordes)
 
+            elif(puntoRef.x==0):
+                if(random.randint(0,1)==0):
+                    Reflejo.setDirectionFromAngle(random.randint(1, 89))
+                else:
+                    Reflejo.setDirectionFromAngle(random.randint(271, 359))
+                final=PT.intersectPoint(Reflejo, bordes)
+            elif(puntoRef.x==500):
+                    Reflejo.setDirectionFromAngle(random.randint(89, 269))
+                    final = PT.intersectPoint(Reflejo, bordes)
+            Reflejo.setFinal(final)
+            reflejos.append(Reflejo);
 
     for pared in paredes:
 
@@ -46,6 +70,8 @@ def MAINLOOP():
 
     for luz in luces:
         display.drawLight(luz)
+    for reflejo in reflejos:
+        display.drawLight(reflejo)
 
     '''while True:
         #display.screen.fill((255, 255, 255))
@@ -63,7 +89,7 @@ if __name__ == '__main__':
     Thread = threading.Thread(target=MAINLOOP)
     Thread.setDaemon(True)
     boolean = True
-    display = Window(550, 550, "Path Tracing")
+    display = Window(500, 500, "Path Tracing")
     Thread.start()
     display.run()
 

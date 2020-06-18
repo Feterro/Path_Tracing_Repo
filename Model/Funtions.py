@@ -1,6 +1,5 @@
 import math
 from Model.Segmento import Segmento
-from Model.Ray import Ray
 def length(v1):
     #Assumes v1 starts at (0,0)
     return math.sqrt(v1.x * v1.x + v1.y * v1.y)
@@ -15,7 +14,7 @@ def normalize(v1):
     return v1
 
 
-def anguloEntreRectas(light=Ray(), wall=Segmento()):
+def anguloEntreRectas(light, wall):
     numerador = light.posicion.y - light.final.y
     denominador = light.posicion.x - light.final.x
     m1 = 0
