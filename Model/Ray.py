@@ -9,7 +9,7 @@ class Ray:
         self.posicion = pPosicion
         self.setDireccion(pDireccion)
         self.final = Point(pPosicion.x, pPosicion.y)
-        self.largo = 500
+        self.lucesIndirectas = 3
 
     def getDireccion(self):
         return self.direccion
@@ -39,12 +39,6 @@ class Ray:
     def setFinal(self, pFinal):
 
         self.final = pFinal
-        largo = fun.pointsDistance(self.posicion, self.final)
-
-        if (self.largo - largo) > 0:
-            return True
-        else:
-            return False
 
     def getFinal(self):
         return self.final
@@ -64,7 +58,6 @@ class Ray:
             pDireccion.y = random.randint(0, 500)
         self.setDireccion(pDireccion)
 
-
     def generarRay(self):
         #Dado un rayo se genera otro por el choque con una pared
 
@@ -80,6 +73,41 @@ class Ray:
 
         return ray
 
-def reboteRayos(light=Ray(), wall=Segmento()):
-    pass
+    def rebotar(self, bordes, paredes):
+        from Model.PathTracing import intersectPoint
+        lucesIndirectas = []
+
+        for i in range(self.lucesIndirectas):
+            luzIndirecta = reboteRayos(self, bordes)
+            final = intersectPoint(luzIndirecta, paredes)
+            if final is not None:
+                luzIndirecta.setFinal(final)
+
+                lucesIndirectas.append(luzIndirecta)
+
+        return  lucesIndirectas
+
+def reboteRayos(light, bordes):
+    import Model.PathTracing as PT
+    #Reflexion
+    puntoRef = PT.intersectPoint(light, bordes)
+    luzIndirecta = Ray(pPosicion=light.final)
+
+    if puntoRef.y == 0:
+        luzIndirecta.setDirectionFromAngle(random.randint(181, 359))
+
+    elif puntoRef.y == 500:
+        luzIndirecta.setDirectionFromAngle(random.randint(1, 179))
+
+    elif puntoRef.x == 0:
+        if random.randint(0, 1) == 0:
+            luzIndirecta.setDirectionFromAngle(random.randint(1, 89))
+
+        else:
+            luzIndirecta.setDirectionFromAngle(random.randint(271, 359))
+
+    elif puntoRef.x == 500:
+        luzIndirecta.setDirectionFromAngle(random.randint(89, 269))
+
+    return luzIndirecta
 

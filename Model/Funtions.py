@@ -13,21 +13,12 @@ def normalize(v1):
     v1 = v1 / length(v1)
     return v1
 
+def getArrayImage():
+    imgName = "C:/Users/edfsedf/Documents/GitHub/Path_Tracing_Repo/Model/test.png"
+    from PIL import Image
+    import numpy as np
 
-def anguloEntreRectas(light, wall):
-    numerador = light.posicion.y - light.final.y
-    denominador = light.posicion.x - light.final.x
-    m1 = 0
-    if denominador != 0:
-        pendiente = numerador / denominador
-
-    numerador = wall.seccion[0].y - wall.seccion[1].y
-    denominador = wall.seccion[0].x - wall.seccion[1].x
-    m2 = 0
-    if denominador != 0:
-        m2 = numerador / denominador
-    if(1 + m1 *m2) != 0:
-        angulo = math.atan(m1 - m2 / 1 + m1 * m2)
-        return angulo
-    else:
-        return False
+    # reference image for background color
+    im_file = Image.open(imgName)
+    ref = np.array(im_file)
+    return ref

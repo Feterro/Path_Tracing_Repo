@@ -2,6 +2,8 @@ from Model.Ray import *
 from Model.Segmento import *
 from Model.Funtions import *
 
+#TODO ColorBlind
+#TODO Especularidad
 
 def intersectPoint(light=Ray(), walls=[Segmento()]):
 
@@ -12,9 +14,15 @@ def intersectPoint(light=Ray(), walls=[Segmento()]):
         if point is not None:
             dictPoints[pointsDistance(point, light.posicion)] = point
 
-    if len(dictPoints) != 0:
+    if len(dictPoints) > 0:
+        point = dictPoints[min(dictPoints.keys())]
+        if point.x == light.posicion.x and point.y == light.posicion.y:
+            del dictPoints[min(dictPoints.keys())]
 
-        return dictPoints[min(dictPoints.keys())]
+        if len(dictPoints) > 0:
+            return dictPoints[min(dictPoints.keys())]
+        else:
+            return None
     else:
         return None
 
@@ -72,9 +80,6 @@ def raySegmentIntersect2(ori, dir, p1, p2):
     return None
 
     pass
-
-
-
 
 def makePoint(posicion, t, direccion):
     normalizeDirection = normalize(direccion)
