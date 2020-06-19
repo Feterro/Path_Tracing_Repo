@@ -42,7 +42,7 @@ def MAINLOOP():
 
     for i in arange(0,360,0.1):
         ray1 = Ray(pPosicion=Point(190, 145))
-        ray2 = Ray(pPosicion=Point(280, 145))
+        ray2 = Ray(pPosicion=Point(310, 145))
         ray1.generarDir()
         ray2.generarDir()
         #ray2.setDirectionFromAngle(i)
@@ -71,15 +71,15 @@ def MAINLOOP():
     while True:
         #display.screen.fill((255, 255, 255))
         display.drawImage(Img)
-        time.sleep(1)
-        print(Pixeles)
+        time.sleep(0.01)
+
 
 Luces = Reflejos = Paredes = []
 Pixeles = {}
 Img = None
+
 def threadPathTrace():
     PT.pathTrace(Luces, Reflejos, Paredes, Img, Pixeles)
-
 t = threading.Thread(target = threadPathTrace) # f being the function that tells how the ball should move
 t.setDaemon(True) # Alternatively, you can use "t.daemon = True"
 
