@@ -9,7 +9,7 @@ class Ray:
         self.posicion = pPosicion
         self.setDireccion(pDireccion)
         self.final = Point(pPosicion.x, pPosicion.y)
-        self.lucesIndirectas = 3
+        self.lucesIndirectas = 2
 
     def getDireccion(self):
         return self.direccion

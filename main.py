@@ -53,10 +53,10 @@ def MAINLOOP():
         luces.append(ray2)
         if point is not None:
             ray1.setFinal(point)
-            reflejos += ray1.rebotar(bordes, paredes)
+            #reflejos += ray1.rebotar(bordes, paredes)
         if point2 is not None:
             ray2.setFinal(point2)
-            reflejos += ray2.rebotar(bordes, paredes)
+            #reflejos += ray2.rebotar(bordes, paredes)
 
     img = FN.getImageBlank()
     global t, Img, Reflejos, Luces, Paredes

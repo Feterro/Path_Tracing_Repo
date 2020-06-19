@@ -94,10 +94,10 @@ def makePoint(posicion, t, direccion):
 def pathTrace(luces, reflejos, paredes, blankImage, pixeles):
 
     img = getArrayImage()
-
+    #luzIndirecta(reflejos, blankImage, img, pixeles)
     luzDirecta(luces, blankImage, img, pixeles)
 
-    #luzIndirecta(reflejos, blankImage, img, pixeles)
+
 
 def luzIndirecta(reflejos, blankImage, img, pixeles):
     for reflejo in reflejos:
@@ -107,7 +107,10 @@ def luzIndirecta(reflejos, blankImage, img, pixeles):
             if y == 500:
                 y -= 1
 
-            pixeles[x][y] += 1
+            if str(x) + str(y) in pixeles:
+                pixeles[str(x) + str(y)] += 1
+            else:
+                pixeles[str(x) + str(y)] = 1
 
             blankImage[x][y] = img[y][x][:3]
 
@@ -126,10 +129,6 @@ def luzDirecta(luces, blankImage, img, pixeles={}):
             values = values * intensity * luzTemporal
             values = add(blankImage[px - 1][py - 1], values) / 2
             blankImage[px - 1][py - 1] = values
-            if str(px)+str(py) in pixeles:
-                pixeles[str(px)+str(py)] += 1
-            else:
-                pixeles[str(px) + str(py)] = 1
 
 
 def functionRay(Ray, x):
