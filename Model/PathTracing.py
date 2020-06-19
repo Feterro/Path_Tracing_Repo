@@ -1,6 +1,9 @@
+from skimage.draw import line
+
 from Model.Ray import *
 from Model.Segmento import *
 from Model.Funtions import *
+from numpy import *
 
 #TODO ColorBlind
 #TODO Especularidad
@@ -87,3 +90,60 @@ def makePoint(posicion, t, direccion):
     y = posicion.y + normalizeDirection.y * t
     point = Point(int(x), int(y))
     return point
+
+def pathTrace(luces, reflejos, paredes, blankImage, pixeles):
+
+    img = getArrayImage()
+
+    luzDirecta(luces, blankImage, img, pixeles)
+
+    #luzIndirecta(reflejos, blankImage, img, pixeles)
+
+def luzIndirecta(reflejos, blankImage, img, pixeles):
+    for reflejo in reflejos:
+        for x in range(reflejo.posicion.x, reflejo.final.x, 1):
+            y = functionRay(reflejo, x)
+            y = int(y)
+            if y == 500:
+                y -= 1
+
+            pixeles[x][y] += 1
+
+            blankImage[x][y] = img[y][x][:3]
+
+
+def luzDirecta(luces, blankImage, img, pixeles={}):
+
+    for luz in luces:
+        luzTemporal = array([1, 1, 0.75])
+        puntosx, puntosy = line(luz.posicion.x, luz.posicion.y, luz.final.x, luz.final.y)
+
+        for i in range(len(puntosx)):
+            px = puntosx[i]
+            py = puntosy[i]
+            intensity = (1 - (pointsDistance(luz.posicion, Point(px, py)) / 500)) ** 2
+            values = (img[int(py) - 1][int(px) - 1])[:3]
+            values = values * intensity * luzTemporal
+            values = add(blankImage[px - 1][py - 1], values) / 2
+            blankImage[px - 1][py - 1] = values
+            if str(px)+str(py) in pixeles:
+                pixeles[str(px)+str(py)] += 1
+            else:
+                pixeles[str(px) + str(py)] = 1
+
+
+def functionRay(Ray, x):
+    #esta funcion retorna un y dado un x
+    #calcular la pendiente
+    x1 = Ray.posicion.x
+    y1 = Ray.posicion.y
+    x2 = Ray.final.x
+    y2 = Ray.final.y
+
+    if x2 - x1 == 0:
+        return False
+    m = (y2 - y1) / (x2 - x1)
+
+    y = m*(x -x1) + y1
+
+    return y
