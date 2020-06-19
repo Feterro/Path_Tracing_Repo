@@ -26,6 +26,6 @@ def getArrayImage():
 def getImageBlank():
     from PIL import Image
     import numpy as np
-    i = Image.new("RGB", (500, 500), (255, 255, 255))
+    i = Image.new("RGB", (500, 500), (0, 0, 0))
     px = np.array(i)
     return px

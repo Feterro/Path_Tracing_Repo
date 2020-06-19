@@ -1,7 +1,10 @@
+from skimage.draw import line
+
 from Model.Ray import *
 from Model.Segmento import *
 from Model.Funtions import *
-from numpy import array
+from numpy import *
+
 #TODO ColorBlind
 #TODO Especularidad
 
@@ -88,22 +91,15 @@ def makePoint(posicion, t, direccion):
     point = Point(int(x), int(y))
     return point
 
-def pathTrace(luces, reflejos, paredes, blankImage):
+def pathTrace(luces, reflejos, paredes, blankImage, pixeles):
 
     img = getArrayImage()
 
-    pixelColor = 0
-    for luz in luces:
-        inicio = min(luz.posicion.x, luz.final.x)
-        final = max(luz.posicion.x, luz.final.x)
-        for x in range(inicio,final, 1):
-            y = functionRay(luz, x)
-            y = int(y)
-            if y == 500:
-                y -= 1
-            blankImage[x][y] = img[y][x][:3]
+    luzDirecta(luces, blankImage, img, pixeles)
 
+    #luzIndirecta(reflejos, blankImage, img, pixeles)
 
+def luzIndirecta(reflejos, blankImage, img, pixeles):
     for reflejo in reflejos:
         for x in range(reflejo.posicion.x, reflejo.final.x, 1):
             y = functionRay(reflejo, x)
@@ -111,16 +107,29 @@ def pathTrace(luces, reflejos, paredes, blankImage):
             if y == 500:
                 y -= 1
 
+            pixeles[x][y] += 1
+
             blankImage[x][y] = img[y][x][:3]
-            '''distance = pointsDistance(Point(x,y), reflejo.posicion)
-            intensity = (1 - (distance / 500)) ** 2
-            values = img[y][x][:3]
-            values = values * intensity * array([1,1,1])
 
-            pixelColor = values
-            blankImage[x][y] = pixelColor // len(reflejos)'''
 
-    #return blankImage
+def luzDirecta(luces, blankImage, img, pixeles={}):
+
+    for luz in luces:
+        luzTemporal = array([1, 1, 0.75])
+        puntosx, puntosy = line(luz.posicion.x, luz.posicion.y, luz.final.x, luz.final.y)
+
+        for i in range(len(puntosx)):
+            px = puntosx[i]
+            py = puntosy[i]
+            intensity = (1 - (pointsDistance(luz.posicion, Point(px, py)) / 500)) ** 2
+            values = (img[int(py) - 1][int(px) - 1])[:3]
+            values = values * intensity * luzTemporal
+            values = add(blankImage[px - 1][py - 1], values) / 2
+            blankImage[px - 1][py - 1] = values
+            if str(px)+str(py) in pixeles:
+                pixeles[str(px)+str(py)] += 1
+            else:
+                pixeles[str(px) + str(py)] = 1
 
 
 def functionRay(Ray, x):

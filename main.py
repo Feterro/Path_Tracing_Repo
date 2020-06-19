@@ -5,6 +5,7 @@ import time
 from Model.Ray import *
 import Model.PathTracing as PT
 import Model.Funtions as FN
+from numpy import arange
 def MAINLOOP():
 
     global boolean
@@ -30,7 +31,7 @@ def MAINLOOP():
         Segmento(False, [Point(180, 390), Point(180, 286)]),
         Segmento(False, [Point(180, 286), Point(140, 286)]),
         Segmento(False, [Point(320, 320), Point(360, 320)]),
-        Segmento(False, [Point(180, 250), Point(180, 135)]),#bvvcjhg
+        Segmento(False, [Point(180, 250), Point(180, 135)]),
         Segmento(False, [Point(215, 135), Point(215, 107)]),
         Segmento(False, [Point(285, 135), Point(285, 107)])
     ]
@@ -39,13 +40,13 @@ def MAINLOOP():
 
     display.screen.fill((0, 0, 0))
 
-    for i in range(0,1000,1):
+    for i in arange(0,360,0.1):
         ray1 = Ray(pPosicion=Point(190, 145))
         ray2 = Ray(pPosicion=Point(280, 145))
         ray1.generarDir()
         ray2.generarDir()
         #ray2.setDirectionFromAngle(i)
-
+        #ray1.setDirectionFromAngle(i)
         point = PT.intersectPoint(ray1, paredes)
         point2 = PT.intersectPoint(ray2, paredes)
         luces.append(ray1)
@@ -64,27 +65,20 @@ def MAINLOOP():
     Paredes = paredes
     Img = img
 
-
-    '''for pared in paredes:
-
-        display.drawSegment((0,0,255),pared)
-
-    for luz in luces:
-        display.drawLight(luz)
-    for reflejo in reflejos:
-        display.drawLight(reflejo)'''
     print("Rayos generados")
 
     t.start()
     while True:
         #display.screen.fill((255, 255, 255))
         display.drawImage(Img)
-        time.sleep(0.1)
+        time.sleep(1)
+        print(Pixeles)
 
 Luces = Reflejos = Paredes = []
+Pixeles = {}
 Img = None
 def threadPathTrace():
-    PT.pathTrace(Luces, Reflejos, Paredes, Img)
+    PT.pathTrace(Luces, Reflejos, Paredes, Img, Pixeles)
 
 t = threading.Thread(target = threadPathTrace) # f being the function that tells how the ball should move
 t.setDaemon(True) # Alternatively, you can use "t.daemon = True"

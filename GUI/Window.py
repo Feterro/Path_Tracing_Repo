@@ -44,7 +44,7 @@ class Window:
         pygame.display.flip()
 
     def drawImage(self, bmp):
-        self.screen.fill((255, 255, 255))
+        self.screen.fill((0, 0, 0))
         surface = pygame.surfarray.make_surface(bmp)
         self.screen.blit(surface, (0, 0))
         pygame.display.flip()
