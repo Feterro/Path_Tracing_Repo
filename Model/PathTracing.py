@@ -1,7 +1,7 @@
 from Model.Ray import *
 from Model.Segmento import *
 from Model.Funtions import *
-
+from numpy import array
 #TODO ColorBlind
 #TODO Especularidad
 
@@ -87,3 +87,54 @@ def makePoint(posicion, t, direccion):
     y = posicion.y + normalizeDirection.y * t
     point = Point(int(x), int(y))
     return point
+
+def pathTrace(luces, reflejos, paredes, blankImage):
+
+    img = getArrayImage()
+
+    pixelColor = 0
+    for luz in luces:
+        inicio = min(luz.posicion.x, luz.final.x)
+        final = max(luz.posicion.x, luz.final.x)
+        for x in range(inicio,final, 1):
+            y = functionRay(luz, x)
+            y = int(y)
+            if y == 500:
+                y -= 1
+            blankImage[x][y] = img[y][x][:3]
+
+
+    for reflejo in reflejos:
+        for x in range(reflejo.posicion.x, reflejo.final.x, 1):
+            y = functionRay(reflejo, x)
+            y = int(y)
+            if y == 500:
+                y -= 1
+
+            blankImage[x][y] = img[y][x][:3]
+            '''distance = pointsDistance(Point(x,y), reflejo.posicion)
+            intensity = (1 - (distance / 500)) ** 2
+            values = img[y][x][:3]
+            values = values * intensity * array([1,1,1])
+
+            pixelColor = values
+            blankImage[x][y] = pixelColor // len(reflejos)'''
+
+    #return blankImage
+
+
+def functionRay(Ray, x):
+    #esta funcion retorna un y dado un x
+    #calcular la pendiente
+    x1 = Ray.posicion.x
+    y1 = Ray.posicion.y
+    x2 = Ray.final.x
+    y2 = Ray.final.y
+
+    if x2 - x1 == 0:
+        return False
+    m = (y2 - y1) / (x2 - x1)
+
+    y = m*(x -x1) + y1
+
+    return y
