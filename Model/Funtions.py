@@ -14,7 +14,7 @@ def normalize(v1):
     return v1
 
 def getArrayImage():
-    imgName = "C:/Users/edfsedf/Documents/GitHub/Path_Tracing_Repo/Model/test.png"
+    imgName = "C:/Users/edfsedf/Documents/GitHub/Path_Tracing_Repo/fondo.png"
     from PIL import Image
     import numpy as np
 
@@ -22,3 +22,10 @@ def getArrayImage():
     im_file = Image.open(imgName)
     ref = np.array(im_file)
     return ref
+
+def getImageBlank():
+    from PIL import Image
+    import numpy as np
+    i = Image.new("RGB", (500, 500), (0, 0, 0))
+    px = np.array(i)
+    return px
