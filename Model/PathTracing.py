@@ -94,26 +94,33 @@ def makePoint(posicion, t, direccion):
 def pathTrace(luces, reflejos, paredes, blankImage, pixeles):
 
     img = getArrayImage()
-    #luzIndirecta(reflejos, blankImage, img, pixeles)
+    luzIndirecta(reflejos, blankImage, img, pixeles)
     luzDirecta(luces, blankImage, img, pixeles)
-
-
 
 def luzIndirecta(reflejos, blankImage, img, pixeles):
     for reflejo in reflejos:
-        for x in range(reflejo.posicion.x, reflejo.final.x, 1):
-            y = functionRay(reflejo, x)
-            y = int(y)
-            if y == 500:
-                y -= 1
 
-            if str(x) + str(y) in pixeles:
-                pixeles[str(x) + str(y)] += 1
+        puntosx, puntosy = line( reflejo.posicion.x, reflejo.posicion.y, reflejo.final.x, reflejo.final.y)
+
+        for i in range(len(puntosx)):
+            px = puntosx[i]
+            py = puntosy[i]
+
+            if str(px) + str(py) in pixeles:
+                pixeles[str(px) + str(py)] += 1
             else:
-                pixeles[str(x) + str(y)] = 1
+                pixeles[str(px) + str(py)] = 1
 
-            blankImage[x][y] = img[y][x][:3]
+            intensity = (1 - (pointsDistance(reflejo.posicion, Point(px, py)) / 500)) ** 2
+            values = (img[int(py) - 1][int(px) - 1])[:3]
+            colorDominante = max(values.tolist())
+            colorPorcen = values / array([colorDominante,colorDominante,colorDominante])
+            luzTemporal = array([1, 1, 0.75])
+            luzTemporal = luzTemporal + (luzTemporal*colorPorcen)
 
+            values = values * intensity * luzTemporal
+            values = add(blankImage[px - 1][py - 1], values) / pixeles[str(px) + str(py)]
+            blankImage[px - 1][py - 1] = values
 
 def luzDirecta(luces, blankImage, img, pixeles={}):
 
@@ -129,7 +136,6 @@ def luzDirecta(luces, blankImage, img, pixeles={}):
             values = values * intensity * luzTemporal
             values = add(blankImage[px - 1][py - 1], values) / 2
             blankImage[px - 1][py - 1] = values
-
 
 def functionRay(Ray, x):
     #esta funcion retorna un y dado un x

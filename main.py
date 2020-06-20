@@ -43,20 +43,20 @@ def MAINLOOP():
     for i in arange(0,360,0.1):
         ray1 = Ray(pPosicion=Point(190, 145))
         ray2 = Ray(pPosicion=Point(310, 145))
-        ray1.generarDir()
-        ray2.generarDir()
-        #ray2.setDirectionFromAngle(i)
-        #ray1.setDirectionFromAngle(i)
+        #ray1.generarDir()
+        #ray2.generarDir()
+        ray2.setDirectionFromAngle(i)
+        ray1.setDirectionFromAngle(i)
         point = PT.intersectPoint(ray1, paredes)
         point2 = PT.intersectPoint(ray2, paredes)
         luces.append(ray1)
         luces.append(ray2)
         if point is not None:
             ray1.setFinal(point)
-            #reflejos += ray1.rebotar(bordes, paredes)
+            reflejos += ray1.rebotar(bordes, paredes)
         if point2 is not None:
             ray2.setFinal(point2)
-            #reflejos += ray2.rebotar(bordes, paredes)
+            reflejos += ray2.rebotar(bordes, paredes)
 
     img = FN.getImageBlank()
     global t, Img, Reflejos, Luces, Paredes
