@@ -49,10 +49,10 @@ class Ray:
         pDireccion = Point()
         pDireccion.x = 500
         pDireccion.y = 500
-        if coor==0:
+        if coor == 0:
             pDireccion.y = 0
             pDireccion.x = 0
-        if num==0:
+        if num == 0:
             pDireccion.x = random.randint(0,500)
         else:
             pDireccion.y = random.randint(0, 500)
@@ -78,20 +78,29 @@ class Ray:
         lucesIndirectas = []
 
         for i in range(self.lucesIndirectas):
-            luzIndirecta = reboteRayos(self, bordes)
-            final = intersectPoint(luzIndirecta, paredes)
+            reflejo = reboteRayos(self, bordes)
+            final = intersectPoint(reflejo, paredes)
             if final is not None:
-                luzIndirecta.setFinal(final)
-
-                lucesIndirectas.append(luzIndirecta)
+                reflejo.setFinal(final)
+                reflejo.setIntensidad(self)
+                lucesIndirectas.append(reflejo)
 
         return  lucesIndirectas
+
+class Reflejo(Ray):
+
+    def __init__(self,  pPosicion=Point(10, 10), pDireccion=Point(20,10)):
+        Ray.__init__(self, pPosicion, pDireccion)
+        self.intensidad = 1
+
+    def setIntensidad(self, Ray):
+        self.intensidad = (1 - (fun.pointsDistance(Ray.posicion, self.posicion) / 500)) ** 2
 
 def reboteRayos(light, bordes):
     import Model.PathTracing as PT
     #Reflexion
     puntoRef = PT.intersectPoint(light, bordes)
-    luzIndirecta = Ray(pPosicion=light.final)
+    luzIndirecta = Reflejo(pPosicion=light.final)
 
     if puntoRef.y == 0:
         luzIndirecta.setDirectionFromAngle(random.randint(181, 359))

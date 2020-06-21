@@ -98,10 +98,9 @@ def pathTrace(luces, reflejos, paredes, blankImage, pixeles):
     luzDirecta(luces, blankImage, img, pixeles)
 
 def luzIndirecta(reflejos, blankImage, img, pixeles):
+
     for reflejo in reflejos:
-
         puntosx, puntosy = line( reflejo.posicion.x, reflejo.posicion.y, reflejo.final.x, reflejo.final.y)
-
         for i in range(len(puntosx)):
             px = puntosx[i]
             py = puntosy[i]
@@ -111,7 +110,7 @@ def luzIndirecta(reflejos, blankImage, img, pixeles):
             else:
                 pixeles[str(px) + str(py)] = 1
 
-            intensity = (1 - (pointsDistance(reflejo.posicion, Point(px, py)) / 500)) ** 2
+            intensity =  (reflejo.intensidad - (pointsDistance(reflejo.posicion, Point(px, py)) / 500)) ** 2
             values = (img[int(py) - 1][int(px) - 1])[:3]
             colorDominante = max(values.tolist())
             colorPorcen = values / array([colorDominante,colorDominante,colorDominante])

@@ -32,7 +32,7 @@ class Window:
 
     def drawSegment(self, color=(0,0,0), pSegmento=Segmento(False,[Point(50,50), Point(50,100)])):
         pygame.draw.line(self.screen, color, pSegmento.getSeccion()[0].getTuple(),
-        pSegmento.getSeccion()[1].getTuple(), 5)
+        pSegmento.getSeccion()[1].getTuple(), 1)
         pygame.display.flip()
 
     def drawLight(self, pRay=Ray()):
