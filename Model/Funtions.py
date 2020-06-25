@@ -1,4 +1,5 @@
 import math
+import random
 from Model.Segmento import Segmento
 def length(v1):
     #Assumes v1 starts at (0,0)
@@ -14,7 +15,7 @@ def normalize(v1):
     return v1
 
 def getArrayImage():
-    imgName = "C:/Users/edfsedf/Documents/GitHub/Path_Tracing_Repo/roomBleed.png"
+    imgName = "roomBleed.png"
     from PIL import Image
     import numpy as np
 
@@ -29,3 +30,26 @@ def getImageBlank():
     i = Image.new("RGB", (500, 500), (0, 0, 0))
     px = np.array(i)
     return px
+
+def getDireccionLuz(ray, segmento):
+    if segmento.seccion[0].x == segmento.seccion[1].x:
+        if segmento.seccion[0].x > ray.posicion.x:
+            return "der"
+        else:
+            return "izq"
+    else:
+        if segmento.seccion[0].y > ray.posicion.y:
+            return "aba"
+        else:
+            return "arr"
+
+def pendiente(puntoIni,puntoFin):
+    return puntoFin.y-puntoIni.y/puntoFin.x-puntoIni.x
+
+
+def anguloIncidencia(ray, auxiliar):
+    rayoAuxiliar = auxiliar
+    longOpue = rayoAuxiliar.final.y-rayoAuxiliar.posicion.y
+    longAdya = ray.final.x-rayoAuxiliar.final.x
+    angRad = math.atan(longOpue/longAdya)
+    return abs(math.degrees(angRad))

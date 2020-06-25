@@ -2,6 +2,7 @@ from Model.Segmento import *
 import random
 import Model.Funtions as fun
 import math as mt
+
 class Ray:
 
     def __init__(self, pPosicion=Point(10, 10), pDireccion=Point(20,10)):
@@ -73,12 +74,12 @@ class Ray:
 
         return ray
 
-    def rebotar(self, bordes, paredes):
+    def rebotar(self, paredes):
         from Model.PathTracing import intersectPoint
         lucesIndirectas = []
 
         for i in range(self.lucesIndirectas):
-            reflejo = reboteRayos(self, bordes)
+            reflejo = reboteRayos(self, paredes)
             final = intersectPoint(reflejo, paredes)
             if final is not None:
                 reflejo.setFinal(final)
@@ -96,27 +97,60 @@ class Reflejo(Ray):
     def setIntensidad(self, Ray):
         self.intensidad = (1 - (fun.pointsDistance(Ray.posicion, self.posicion) / 500)) ** 2
 
-def reboteRayos(light, bordes):
+
+
+def reboteRayos(light, paredes):
     import Model.PathTracing as PT
-    #Reflexion
-    puntoRef = PT.intersectPoint(light, bordes)
+    paredChoque= PT.intersectPoint(light, paredes, True)
+    puntoRef = fun.getDireccionLuz(light,paredChoque)
     luzIndirecta = Reflejo(pPosicion=light.final)
 
-    if puntoRef.y == 0:
-        luzIndirecta.setDirectionFromAngle(random.randint(181, 359))
+    if puntoRef == "arr":
+        luzIndirecta.setDirectionFromAngle(random.randint(189, 340))
+    elif puntoRef == "aba":
+        luzIndirecta.setDirectionFromAngle(random.randint(10, 170))
 
-    elif puntoRef.y == 500:
-        luzIndirecta.setDirectionFromAngle(random.randint(1, 179))
-
-    elif puntoRef.x == 0:
+    elif puntoRef == "izq":
         if random.randint(0, 1) == 0:
-            luzIndirecta.setDirectionFromAngle(random.randint(1, 89))
+            luzIndirecta.setDirectionFromAngle(random.randint(1, 85))
 
         else:
-            luzIndirecta.setDirectionFromAngle(random.randint(271, 359))
-
-    elif puntoRef.x == 500:
-        luzIndirecta.setDirectionFromAngle(random.randint(89, 269))
-
+            luzIndirecta.setDirectionFromAngle(random.randint(280, 360))
+    elif puntoRef == "der":
+        luzIndirecta.setDirectionFromAngle(random.randint(95, 260))
     return luzIndirecta
+
+def reboteEspecular(ray1, paredes):
+    # BUG punto de interseccion es apenas mayor al de salida
+    import Model.PathTracing as PT
+    auxiliar = Ray(pPosicion=ray1.posicion)
+    auxiliar.final.x = ray1.posicion.x
+    auxiliar.final.y = ray1.final.y
+    paredChoque = PT.intersectPoint(ray1, paredes, True)
+    direccion=fun.getDireccionLuz(ray1, paredChoque)
+    cambioAng=0
+    if ray1.posicion.x == ray1.final.x or ray1.final.y==ray1.posicion.y:
+        return ray1
+    ang = fun.anguloIncidencia(ray1, auxiliar)
+    anguloInvertido=0
+    if direccion == "arr":
+        cambioAng=180
+        if ray1.final.x > ray1.posicion.x:
+            anguloInvertido=-((90-ang) * 2)
+    elif direccion == "aba":
+        if ray1.final.x < ray1.posicion.x:
+            anguloInvertido=(90 - ang) * 2
+    elif direccion == "izq":
+        cambioAng=270
+        if ray1.final.y < ray1.posicion.y:
+            anguloInvertido=(90 - ang) * 2
+    elif direccion == "der":
+        cambioAng=90
+        if ray1.final.y > ray1.posicion.y:
+            anguloInvertido=(90 - ang) * 2
+    reb = Ray(pPosicion=ray1.final)
+    reb.setDirectionFromAngle(ang+cambioAng+anguloInvertido)
+    pointPrue = PT.intersectPoint(reb, paredes, False)
+    reb.setFinal(pointPrue)
+    return reb
 
