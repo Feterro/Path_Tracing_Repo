@@ -23,7 +23,11 @@ def MAINLOOP():
         #Segmento(False, [Point(400, 300), Point(400, 400)]),# der
         #Segmento(False, [Point(200, 400), Point(300, 400)]),#abajo
         #Segmento(False, [Point(100, 200), Point(100, 350)]),#izq
-        Segmento(False,[Point(180, 135), Point(215, 135)]),
+
+        Segmento(False, [Point(0, 140), Point(500, 140)]),
+
+
+        Segmento(False, [Point(180, 135), Point(215, 135)]),
         Segmento(False, [Point(285, 135), Point(320, 135)]),
         Segmento(False, [Point(320, 135), Point(320, 277)]),
         Segmento(False, [Point(320, 320), Point(320, 355)]),
@@ -34,6 +38,19 @@ def MAINLOOP():
         Segmento(False, [Point(180, 206), Point(180, 135)]),
         Segmento(False, [Point(215, 135), Point(215, 107)]),
         Segmento(False, [Point(285, 135), Point(285, 107)]),
+
+        Segmento(False, [Point(180, 136), Point(215, 136)]),
+        Segmento(False, [Point(285, 136), Point(320, 136)]),
+        Segmento(False, [Point(319, 135), Point(319, 277)]),
+        Segmento(False, [Point(319, 320), Point(319, 355)]),
+        Segmento(False, [Point(320, 356), Point(215, 356)]),
+        Segmento(False, [Point(179, 351), Point(179, 286)]),
+        Segmento(False, [Point(180, 287), Point(140, 287)]),
+        Segmento(False, [Point(320, 321), Point(360, 321)]),
+        Segmento(False, [Point(181, 206), Point(181, 135)]),
+        Segmento(False, [Point(214, 135), Point(214, 107)]),
+        Segmento(False, [Point(284, 135), Point(284, 107)]),
+
 
         #habitacion izquierda
         Segmento(False, [Point(145, 206), Point(180, 206)]),
@@ -109,10 +126,13 @@ def MAINLOOP():
         luces.append(ray1)
         if point is not None:
             ray1.setFinal(point)
-            reflejos += ray1.rebotar(bordes, paredes)
+            reflejos += ray1.rebotar(paredes)
+            luces.append(reboteEspecular(ray1, paredes))
+
         if point2 is not None:
             ray2.setFinal(point2)
-            reflejos += ray2.rebotar(bordes, paredes)
+            reflejos += ray2.rebotar(paredes)
+            luces.append(reboteEspecular(ray2, paredes))
 
     img = FN.getImageBlank()
     global t, Img, Reflejos, Luces, Paredes

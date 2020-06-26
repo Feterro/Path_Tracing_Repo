@@ -6,14 +6,15 @@ from Model.Funtions import *
 from numpy import *
 #TODO ColorBlind
 
-def intersectPoint(light=Ray(), walls=[Segmento()]):
-
+def intersectPoint(light=Ray(), walls=[Segmento()], devolucion=False):
+    paredes=[]
     dictPoints = {}
     for wall in walls:
-
         point = raySegmentIntersect(light, wall)
         if point is not None:
-            dictPoints[pointsDistance(point, light.posicion)] = point
+            dist=pointsDistance(point, light.posicion)
+            dictPoints[dist] = point
+            paredes.append([point, wall])
 
     if len(dictPoints) > 0:
         point = dictPoints[min(dictPoints.keys())]
@@ -21,7 +22,13 @@ def intersectPoint(light=Ray(), walls=[Segmento()]):
             del dictPoints[min(dictPoints.keys())]
 
         if len(dictPoints) > 0:
-            return dictPoints[min(dictPoints.keys())]
+            minimo=dictPoints[min(dictPoints.keys())]
+            if devolucion:
+                for pard in paredes:
+                    if pard[0]==minimo:
+                        return pard[1]
+            else:
+                return minimo
         else:
             return None
     else:
