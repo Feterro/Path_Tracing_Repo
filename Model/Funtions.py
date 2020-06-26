@@ -14,7 +14,7 @@ def normalize(v1):
     return v1
 
 def getArrayImage():
-    imgName = "C:/Users/edfsedf/Documents/GitHub/Path_Tracing_Repo/roomBleed.png"
+    imgName = "C:/Users/edfsedf/Documents/GitHub/Path_Tracing_Repo/roomBleed2.png"
     from PIL import Image
     import numpy as np
 

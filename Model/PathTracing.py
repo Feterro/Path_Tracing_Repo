@@ -4,9 +4,7 @@ from Model.Ray import *
 from Model.Segmento import *
 from Model.Funtions import *
 from numpy import *
-
 #TODO ColorBlind
-#TODO Especularidad
 
 def intersectPoint(light=Ray(), walls=[Segmento()]):
 
@@ -94,8 +92,8 @@ def makePoint(posicion, t, direccion):
 def pathTrace(luces, reflejos, paredes, blankImage, pixeles):
 
     img = getArrayImage()
-    luzIndirecta(reflejos, blankImage, img, pixeles)
     luzDirecta(luces, blankImage, img, pixeles)
+    luzIndirecta(reflejos, blankImage, img, pixeles)
 
 def luzIndirecta(reflejos, blankImage, img, pixeles):
 
@@ -112,26 +110,42 @@ def luzIndirecta(reflejos, blankImage, img, pixeles):
 
             intensity =  (reflejo.intensidad - (pointsDistance(reflejo.posicion, Point(px, py)) / 500)) ** 2
             values = (img[int(py) - 1][int(px) - 1])[:3]
-            colorDominante = max(values.tolist())
-            colorPorcen = values / array([colorDominante,colorDominante,colorDominante])
-            luzTemporal = array([1, 1, 0.75])
-            luzTemporal = luzTemporal + (luzTemporal*colorPorcen)
-
-            values = values * intensity * luzTemporal
-            values = add(blankImage[px - 1][py - 1], values) / pixeles[str(px) + str(py)]
+            #colorRebote = (img[reflejo.posicion.x][ reflejo.posicion.y])[:3]
+            #colorDominante = max(colorRebote.tolist())
+            #colorPorcen = values / array([colorDominante,colorDominante,colorDominante])
+            #luzTemporal = array([1, 1, 0.75])
+            #luzTemporal = luzTemporal + (luzTemporal*colorPorcen)
+            colorWall2 = array([color / 255 for color in img[reflejo.posicion.y][reflejo.posicion.x][:3]])
+            values = values * intensity * colorWall2
+            values = add(blankImage[px - 1][py - 1], values / pixeles[str(px) + str(py)])
             blankImage[px - 1][py - 1] = values
+
+    '''for reflejo in reflejos:
+        puntosx, puntosy = line(reflejo.posicion.x, reflejo.posicion.y, reflejo.final.x, reflejo.final.y)
+        for i in range(len(puntosx)):
+            px = puntosx[i]
+            py = puntosy[i]
+            blankImage[px - 1][py - 1] = blankImage[px - 1][py - 1]/ pixeles[str(px) + str(py)]'''
 
 def luzDirecta(luces, blankImage, img, pixeles={}):
 
-    for luz in luces:
-        luzTemporal = array([1, 1, 0.75])
-        puntosx, puntosy = line(luz.posicion.x, luz.posicion.y, luz.final.x, luz.final.y)
 
+    for luz in luces:
+
+        puntosx, puntosy = line(luz.posicion.x, luz.posicion.y, luz.final.x, luz.final.y)
+        colorRebote = (img[luz.posicion.x][luz.posicion.y])[:3]
         for i in range(len(puntosx)):
             px = puntosx[i]
             py = puntosy[i]
             intensity = (1 - (pointsDistance(luz.posicion, Point(px, py)) / 500)) ** 2
             values = (img[int(py) - 1][int(px) - 1])[:3]
+            #values = add(values, colorRebote)
+            #colorDominante = max(colorRebote.tolist()) + 0.1
+            #colorPorcen = colorRebote / array([colorDominante, colorDominante, colorDominante])
+            luzTemporal = array([1, 1, 0.75])
+
+            #colorWall2 = array([color / 150 for color in  img[luz.posicion.y][luz.posicion.x][:3]])
+
             values = values * intensity * luzTemporal
             values = add(blankImage[px - 1][py - 1], values) / 2
             blankImage[px - 1][py - 1] = values

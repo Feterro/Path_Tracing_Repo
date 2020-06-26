@@ -9,7 +9,7 @@ class Ray:
         self.posicion = pPosicion
         self.setDireccion(pDireccion)
         self.final = Point(pPosicion.x, pPosicion.y)
-        self.lucesIndirectas = 2
+        self.lucesIndirectas = 1
 
     def getDireccion(self):
         return self.direccion
@@ -102,21 +102,19 @@ def reboteRayos(light, bordes):
     puntoRef = PT.intersectPoint(light, bordes)
     luzIndirecta = Reflejo(pPosicion=light.final)
 
-    if puntoRef.y == 0:
-        luzIndirecta.setDirectionFromAngle(random.randint(181, 359))
-
-    elif puntoRef.y == 500:
+    if puntoRef.y == 500:
         luzIndirecta.setDirectionFromAngle(random.randint(1, 179))
 
-    elif puntoRef.x == 0:
-        if random.randint(0, 1) == 0:
-            luzIndirecta.setDirectionFromAngle(random.randint(1, 89))
+    elif puntoRef.y == 0:
+        luzIndirecta.setDirectionFromAngle(random.randint(181, 359))
 
-        else:
-            luzIndirecta.setDirectionFromAngle(random.randint(271, 359))
+    elif puntoRef.x == 0:
+
+            luzIndirecta.setDirectionFromAngle(random.randint(271, 449))
 
     elif puntoRef.x == 500:
         luzIndirecta.setDirectionFromAngle(random.randint(89, 269))
-
+    else:
+        luzIndirecta.setDirectionFromAngle(271)
     return luzIndirecta
 
