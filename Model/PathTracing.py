@@ -156,6 +156,9 @@ def luzDirecta(luces, blankImage, img, pixeles={}):
             values = add(blankImage[px - 1][py - 1], values) / 2
             blankImage[px - 1][py - 1] = values
 
+def luzGlobal(blankImage, img, pixeles):
+    pass
+
 def functionRay(Ray, x):
     #esta funcion retorna un y dado un x
     #calcular la pendiente
