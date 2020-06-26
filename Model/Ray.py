@@ -1,3 +1,4 @@
+
 from Model.Segmento import *
 import random
 import Model.Funtions as fun
@@ -97,10 +98,10 @@ class Reflejo(Ray):
     def setIntensidad(self, Ray):
         self.intensidad = (1 - (fun.pointsDistance(Ray.posicion, self.posicion) / 500)) ** 2
 
-
+import Model.PathTracing as PT
 
 def reboteRayos(light, paredes):
-    import Model.PathTracing as PT
+
     paredChoque= PT.intersectPoint(light, paredes, True)
     puntoRef = fun.getDireccionLuz(light,paredChoque)
     luzIndirecta = Reflejo(pPosicion=light.final)
@@ -123,34 +124,35 @@ def reboteRayos(light, paredes):
 def reboteEspecular(ray1, paredes):
     # BUG punto de interseccion es apenas mayor al de salida
     import Model.PathTracing as PT
-    auxiliar = Ray(pPosicion=ray1.posicion)
+    auxiliar = Reflejo(pPosicion=ray1.posicion)
     auxiliar.final.x = ray1.posicion.x
     auxiliar.final.y = ray1.final.y
     paredChoque = PT.intersectPoint(ray1, paredes, True)
     direccion=fun.getDireccionLuz(ray1, paredChoque)
-    cambioAng=0
+    cambioAng = 0
     if ray1.posicion.x == ray1.final.x or ray1.final.y==ray1.posicion.y:
-        return ray1
+        return None
     ang = fun.anguloIncidencia(ray1, auxiliar)
-    anguloInvertido=0
+    anguloInvertido = 0
     if direccion == "arr":
-        cambioAng=180
+        cambioAng = 180
         if ray1.final.x > ray1.posicion.x:
             anguloInvertido=-((90-ang) * 2)
     elif direccion == "aba":
         if ray1.final.x < ray1.posicion.x:
             anguloInvertido=(90 - ang) * 2
     elif direccion == "izq":
-        cambioAng=270
+        cambioAng = 270
         if ray1.final.y < ray1.posicion.y:
             anguloInvertido=(90 - ang) * 2
     elif direccion == "der":
-        cambioAng=90
+        cambioAng = 90
         if ray1.final.y > ray1.posicion.y:
-            anguloInvertido=(90 - ang) * 2
-    reb = Ray(pPosicion=ray1.final)
+            anguloInvertido = (90 - ang) * 2
+    reb = Reflejo(pPosicion=ray1.final)
     reb.setDirectionFromAngle(ang+cambioAng+anguloInvertido)
     pointPrue = PT.intersectPoint(reb, paredes, False)
     reb.setFinal(pointPrue)
+    reb.setIntensidad(ray1)
     return reb
 

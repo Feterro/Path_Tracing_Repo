@@ -112,7 +112,6 @@ def MAINLOOP():
     reflejos=[]
 
     display.screen.fill((0, 0, 0))
-
     for i in arange(0,360,0.1):
         ray1 = Ray(pPosicion=Point(182, 150))
         ray2 = Ray(pPosicion=Point(318, 150))
@@ -127,12 +126,16 @@ def MAINLOOP():
         if point is not None:
             ray1.setFinal(point)
             reflejos += ray1.rebotar(paredes)
-            luces.append(reboteEspecular(ray1, paredes))
+            '''reflejoEspecular = reboteEspecular(ray1, paredes)
+            if reflejoEspecular is not None:
+                reflejos.append(reflejoEspecular)'''
 
         if point2 is not None:
             ray2.setFinal(point2)
             reflejos += ray2.rebotar(paredes)
-            luces.append(reboteEspecular(ray2, paredes))
+            '''reflejoEspecular = reboteEspecular(ray2, paredes)
+            if reflejoEspecular is not None:
+                reflejos.append(reflejoEspecular)'''
 
     img = FN.getImageBlank()
     global t, Img, Reflejos, Luces, Paredes
@@ -144,6 +147,7 @@ def MAINLOOP():
     print("Rayos generados")
 
     t.start()
+    #threadPathTrace()
     for pared in paredes:
         display.drawSegment((0, 0, 255), pared)
     '''for i in range(len(luces)):
@@ -158,11 +162,12 @@ def MAINLOOP():
 
 
 Luces = Reflejos = Paredes = []
-Pixeles = {}
+Pixeles = [[0]*500]*500
 Img = None
 
 def threadPathTrace():
     PT.pathTrace(Luces, Reflejos, Paredes, Img, Pixeles)
+
 t = threading.Thread(target = threadPathTrace) # f being the function that tells how the ball should move
 t.setDaemon(True) # Alternatively, you can use "t.daemon = True"
 
