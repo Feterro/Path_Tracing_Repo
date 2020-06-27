@@ -126,16 +126,20 @@ def MAINLOOP():
         if point is not None:
             ray1.setFinal(point)
             reflejos += ray1.rebotar(paredes)
-            '''reflejoEspecular = reboteEspecular(ray1, paredes)
-            if reflejoEspecular is not None:
-                reflejos.append(reflejoEspecular)'''
+            ray1.setFinal(point)
+            reflejos += ray1.rebotar(paredes)
+            #reflejoEspecular = reboteEspecular(ray1, paredes)
+            # if reflejoEspecular is not None:
+            #     reflejos.append(reflejoEspecular)
 
         if point2 is not None:
             ray2.setFinal(point2)
             reflejos += ray2.rebotar(paredes)
-            '''reflejoEspecular = reboteEspecular(ray2, paredes)
-            if reflejoEspecular is not None:
-                reflejos.append(reflejoEspecular)'''
+            ray2.setFinal(point2)
+            reflejos += ray2.rebotar(paredes)
+            #reflejoEspecular = reboteEspecular(ray2, paredes)
+            # if reflejoEspecular is not None:
+            #     reflejos.append(reflejoEspecular)
 
     img = FN.getImageBlank()
     global t, Img, Reflejos, Luces, Paredes
@@ -162,11 +166,11 @@ def MAINLOOP():
 
 
 Luces = Reflejos = Paredes = []
-Pixeles = [[0]*500]*500
+lucesEfectivas = [[0]*500]*500
 Img = None
 
 def threadPathTrace():
-    PT.pathTrace(Luces, Reflejos, Paredes, Img, Pixeles)
+    PT.pathTrace(Luces, Reflejos, Paredes, Img, lucesEfectivas)
 
 t = threading.Thread(target = threadPathTrace) # f being the function that tells how the ball should move
 t.setDaemon(True) # Alternatively, you can use "t.daemon = True"

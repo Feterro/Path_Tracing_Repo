@@ -12,6 +12,7 @@ class Ray:
         self.setDireccion(pDireccion)
         self.final = Point(pPosicion.x, pPosicion.y)
         self.lucesIndirectas = 1
+        self.angle = 0
 
     def getDireccion(self):
         return self.direccion
@@ -28,7 +29,7 @@ class Ray:
         self.direccion = pDirection
 
     def setDirectionFromAngle(self, angle):
-
+        self.angle = angle
         x = mt.cos(mt.radians(-angle))
         y = mt.sin(mt.radians(-angle))
         if x > 1:
@@ -93,10 +94,10 @@ class Reflejo(Ray):
 
     def __init__(self,  pPosicion=Point(10, 10), pDireccion=Point(20,10)):
         Ray.__init__(self, pPosicion, pDireccion)
-        self.intensidad = 1
+        self.distancia = 1
 
     def setIntensidad(self, Ray):
-        self.intensidad = (1 - (fun.pointsDistance(Ray.posicion, self.posicion) / 500)) ** 2
+        self.distancia = fun.pointsDistance(Ray.posicion, self.posicion)
 
 import Model.PathTracing as PT
 
