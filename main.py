@@ -6,6 +6,7 @@ from Model.Ray import *
 import Model.PathTracing as PT
 import Model.Funtions as FN
 from numpy import arange
+from collections import deque
 def MAINLOOP():
     samples = 1
     global boolean
@@ -135,6 +136,9 @@ def MAINLOOP():
                 # if reflejoEspecular is not None:
                 #     reflejos.append(reflejoEspecular)
 
+    test_list = deque(reflejos)
+    test_list.rotate(len(reflejos)//2)
+    reflejos = list(test_list)
     img = FN.getImageBlank()
     global t, Img, Reflejos, Luces, Paredes
     Luces = luces
