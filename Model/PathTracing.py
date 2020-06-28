@@ -99,14 +99,15 @@ def makePoint(posicion, t, direccion):
 def pathTrace(luces, reflejos, paredes, blankImage, lucesEfectivas):
     pixelesIndirecta = getImageBlank()
     pixelesDirecta = getImageBlank()
+    matrizIntensidadDirecta = [[0] * 500] * 500
+    matrizIntensidadIndirecta = [[0] * 500] * 500
     img = getArrayImage()
-    luzDirecta(luces, blankImage, img, lucesEfectivas, pixelesDirecta, paredes)
-    luzIndirecta(reflejos, blankImage, img, lucesEfectivas, pixelesIndirecta, pixelesDirecta)
-    #TODO sumar el promedio de la luz indirecta con la luz directa
-    #TODO Dividir entre la cantidad de rayos
+    luzDirecta(luces, blankImage, img, pixelesDirecta, matrizIntensidadDirecta)
+    luzIndirecta(reflejos, blankImage, img, lucesEfectivas, pixelesIndirecta, matrizIntensidadIndirecta)
+    luzGlobal(blankImage, lucesEfectivas, pixelesDirecta, pixelesIndirecta, luces, reflejos,
+              matrizIntensidadDirecta, matrizIntensidadIndirecta)
 
-def luzIndirecta(reflejos, blankImage, img, lucesEfectivas, pixelesIndirecta, pixelesDirecta):
-
+def luzIndirecta(reflejos, blankImage, img, lucesEfectivas, pixelesIndirecta, matrizIntensidad):
     for reflejo in reflejos:
         puntosx, puntosy = line( reflejo.posicion.x, reflejo.posicion.y, reflejo.final.x, reflejo.final.y)
         for i in range(len(puntosx)):
@@ -114,62 +115,55 @@ def luzIndirecta(reflejos, blankImage, img, lucesEfectivas, pixelesIndirecta, pi
             py = puntosy[i]
 
             lucesEfectivas[px-1][py-1] += 1
-            x = px-1
-            y = py-1
             distanciaReflejo = pointsDistance(reflejo.posicion, Point(px, py))
             distanciaLuzDirecta = reflejo.distancia
             distanciaTotal = distanciaReflejo + distanciaLuzDirecta
 
-            #TODO intensidad muy alta, calcular intensidad con la formula
             intensity = (1 - (distanciaTotal / 500)) ** 2
-
+            matrizIntensidad[px][py] = max(matrizIntensidad[px][py], intensity)
             color = (img[int(py) - 1][int(px) - 1])[:3]
-
-            colorWall2 = array([color / 255 for color in img[reflejo.posicion.y][reflejo.posicion.x][:3]])
+            #TODO se debe validar si el rayo es especular para no tomar el color de la pared
+            colorWall2 = array([color / 100 for color in img[reflejo.posicion.y][reflejo.posicion.x][:3]])
             #color = color * intensity * colorWall2
-            color = color*colorWall2 *  math.acos(radians(reflejo.direccion.x))
-            blankImage[px-1][py-1] = add(blankImage[px-1][py-1], color // 2)// 2
-            pixelesIndirecta[px-1][py-1] = blankImage[px-1][py-1]
-    print("Luz indirecta promedio")
-    for reflejo in reflejos:
-        puntosx, puntosy = line(reflejo.posicion.x, reflejo.posicion.y, reflejo.final.x, reflejo.final.y)
-        for i in range(len(puntosx)):
-            px = puntosx[i]
-            py = puntosy[i]
-            blankImage[px - 1][py - 1] = (pixelesDirecta[px-1][py-1] + pixelesIndirecta[px-1][py-1]*0.5) //2
-
+            color = color * colorWall2  * math.acos(radians(reflejo.direccion.x))
+            pixelesIndirecta[px - 1][py - 1] =  add(blankImage[px-1][py-1], color//2)// 2
+            blankImage[px-1][py-1] = pixelesIndirecta[px - 1][py - 1]
 
 
     print("Luz indirecta calculada")
 
-def luzDirecta(luces, blankImage, img, lucesEfectivas, pixelesDirecta, paredes):
+def luzDirecta(luces, blankImage, img, pixelesDirecta, matrizIntensidad):
 
     numeroRayos = 0
     for luz in luces:
         numeroRayos += 1
         puntosx, puntosy = line(luz.posicion.x, luz.posicion.y, luz.final.x, luz.final.y)
         for i in range(len(puntosx)):
+
             px = puntosx[i]
             py = puntosy[i]
 
-
             intensity = (1 - (pointsDistance(luz.posicion, Point(px, py)) / 500)) ** 2
+            matrizIntensidad[px][py] = max(matrizIntensidad[px][py], intensity)
             color = (img[int(py) - 1][int(px) - 1])[:3]
-            luzTemporal = array([1, 1, 1])
 
-            color = color * math.acos(radians(luz.direccion.x)) * intensity
-            blankImage[px-1][py-1] = add(blankImage[px-1][py-1], color // 2)  // 2
+            color = color * math.acos(radians(luz.direccion.x)) * matrizIntensidad[px][py]
+            blankImage[px-1][py-1] = add(blankImage[px-1][py-1], color//2)  // 2
             pixelesDirecta[px - 1][py - 1] = blankImage[px-1][py-1]
-            #blankImage[px - 1][py - 1] = (array(pixelesDirecta[px - 1][py - 1])) #preeliminar
-
-
 
     print("Luz directa calculada")
 
+def luzGlobal(blankImage, lucesEfectivas, pixelesDirecta, pixelesIndirecta, luces, reflejos,
+              matrizIntensidadDirecta, matrizIntensidadIndirecta):
 
-
-def luzGlobal(blankImage, img, pixeles):
-    pass
+    print("Luz global")
+    for reflejo in (reflejos+luces):
+        puntosx, puntosy = line(reflejo.posicion.x, reflejo.posicion.y, reflejo.final.x, reflejo.final.y)
+        for i in range(len(puntosx)):
+            px = puntosx[i]
+            py = puntosy[i]
+            blankImage[px - 1][py - 1] = (pixelesDirecta[px - 1][py - 1]*1.5 + pixelesIndirecta[px - 1][py - 1]*0.5) // 2
+    print("Luz global terminada")
 
 def functionRay(Ray, x):
     #esta funcion retorna un y dado un x

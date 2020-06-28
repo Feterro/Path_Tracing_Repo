@@ -1,7 +1,4 @@
 import pygame
-from PIL import Image
-import numpy as np
-from Model.Segmento import *
 from Model.Ray import *
 class Window:
 

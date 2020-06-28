@@ -18,7 +18,7 @@ def getArrayImage():
 
     from PIL import Image
     import numpy as np
-    imgName = "C:/Users/edfsedf/Documents/GitHub/Path_Tracing_Repo/Model/roomBleed2.png"
+    imgName = "C:/Users/edfsedf/Documents/GitHub/Path_Tracing_Repo/Model/roomBleed3.png"
     # reference image for background color
     im_file = Image.open(imgName)
     ref = np.array(im_file)
@@ -45,7 +45,6 @@ def getDireccionLuz(ray, segmento):
 
 def pendiente(puntoIni,puntoFin):
     return puntoFin.y-puntoIni.y/puntoFin.x-puntoIni.x
-
 
 def anguloIncidencia(ray, auxiliar):
     rayoAuxiliar = auxiliar

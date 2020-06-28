@@ -7,7 +7,7 @@ import Model.PathTracing as PT
 import Model.Funtions as FN
 from numpy import arange
 def MAINLOOP():
-
+    samples = 1
     global boolean
 
     bordes=[
@@ -119,27 +119,21 @@ def MAINLOOP():
         #ray2.generarDir()
         ray2.setDirectionFromAngle(i)
         ray1.setDirectionFromAngle(i)
-        point = PT.intersectPoint(ray1, paredes)
-        point2 = PT.intersectPoint(ray2, paredes)
-        luces.append(ray2)
-        luces.append(ray1)
-        if point is not None:
-            ray1.setFinal(point)
-            reflejos += ray1.rebotar(paredes)
-            ray1.setFinal(point)
-            reflejos += ray1.rebotar(paredes)
-            #reflejoEspecular = reboteEspecular(ray1, paredes)
-            # if reflejoEspecular is not None:
-            #     reflejos.append(reflejoEspecular)
 
-        if point2 is not None:
-            ray2.setFinal(point2)
-            reflejos += ray2.rebotar(paredes)
-            ray2.setFinal(point2)
-            reflejos += ray2.rebotar(paredes)
-            #reflejoEspecular = reboteEspecular(ray2, paredes)
-            # if reflejoEspecular is not None:
-            #     reflejos.append(reflejoEspecular)
+        luces.append(ray1)
+        luces.append(ray2)
+
+    for i in range(samples):
+        for ray in luces:
+            point = PT.intersectPoint(ray, paredes)
+            if point is not None:
+                ray.setFinal(point)
+                reflejos += ray.rebotar(paredes)
+                ray.setFinal(point)
+                reflejos += ray.rebotar(paredes)
+                #reflejoEspecular = reboteEspecular(ray1, paredes)
+                # if reflejoEspecular is not None:
+                #     reflejos.append(reflejoEspecular)
 
     img = FN.getImageBlank()
     global t, Img, Reflejos, Luces, Paredes

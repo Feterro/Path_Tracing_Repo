@@ -91,7 +91,7 @@ class Ray:
         return  lucesIndirectas
 
 class Reflejo(Ray):
-
+    #TODO agregar atributo
     def __init__(self,  pPosicion=Point(10, 10), pDireccion=Point(20,10)):
         Ray.__init__(self, pPosicion, pDireccion)
         self.distancia = 1
