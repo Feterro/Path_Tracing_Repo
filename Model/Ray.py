@@ -79,16 +79,19 @@ class Ray:
     def rebotar(self, paredes):
         from Model.PathTracing import intersectPoint
         lucesIndirectas = []
-
         for i in range(self.lucesIndirectas):
-            reflejo = reboteRayos(self, paredes)
+            paredChoque=intersectPoint(self,paredes,True)
+            if paredChoque.especularidad:
+                reflejo=reboteEspecular(self,paredes)
+            else:
+                reflejo = reboteRayos(self, paredes)
             final = intersectPoint(reflejo, paredes)
             if final is not None:
                 reflejo.setFinal(final)
                 reflejo.setIntensidad(self)
                 lucesIndirectas.append(reflejo)
 
-        return  lucesIndirectas
+        return lucesIndirectas
 
 class Reflejo(Ray):
     #TODO agregar atributo

@@ -3,12 +3,13 @@ class Segmento:
 
     seccion = [Point(), Point()]
     especularidad = False
+    transparencia = False
     lado=""
 
-    def __init__(self, espec=False, puntos=[Point(), Point()], lad="abaj"):
+    def __init__(self, espec=False, puntos=[Point(), Point()], trans=False):
         self.especularidad = espec
         self.seccion = puntos
-        self.lado = lad
+        self.transparencia = trans
 
     def setEspecularidad(self, cambioEspec):
         self.especularidad = cambioEspec
@@ -19,6 +20,4 @@ class Segmento:
     def getSeccion(self):
         return self.seccion
 
-    def getLado(self):
-        return self.lado
 

@@ -11,6 +11,8 @@ def intersectPoint(light=Ray(), walls=[Segmento()], devolucion=False):
     dictPoints = {}
     for wall in walls:
         point = raySegmentIntersect(light, wall)
+        # if wall.transparencia==True:
+        #      point=None
         if point is not None:
             dist=pointsDistance(point, light.posicion)
             dictPoints[dist] = point

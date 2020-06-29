@@ -18,7 +18,7 @@ def getArrayImage():
 
     from PIL import Image
     import numpy as np
-    imgName = "C:/Users/edfsedf/Documents/GitHub/Path_Tracing_Repo/Model/roomBleed3.png"
+    imgName = "Model/roomBleed2.png"
     # reference image for background color
     im_file = Image.open(imgName)
     ref = np.array(im_file)
