@@ -112,7 +112,7 @@ def pathTrace(luces, reflejos, paredes, blankImage, lucesEfectivas):
 def luzIndirecta(reflejos, blankImage, img, lucesEfectivas, pixelesIndirecta, matrizIntensidad):
     for reflejo in reflejos:
         puntosx, puntosy = line( reflejo.posicion.x, reflejo.posicion.y, reflejo.final.x, reflejo.final.y)
-        for i in range(len(puntosx)):
+        for i in range(len(puntosx)-1):
             px = puntosx[i]
             py = puntosy[i]
 
@@ -140,7 +140,7 @@ def luzDirecta(luces, blankImage, img, pixelesDirecta, matrizIntensidad):
     for luz in luces:
         numeroRayos += 1
         puntosx, puntosy = line(luz.posicion.x, luz.posicion.y, luz.final.x, luz.final.y)
-        for i in range(len(puntosx)):
+        for i in range(len(puntosx)-1):
 
             px = puntosx[i]
             py = puntosy[i]

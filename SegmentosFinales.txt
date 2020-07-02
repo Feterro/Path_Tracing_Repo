@@ -1,0 +1,38 @@
+    
+	bordes=[
+        Segmento(False, [Point(0, 500), Point(500, 500)]),
+        Segmento(False, [Point(500, 500), Point(500, 0)]),
+        Segmento(False, [Point(500, 0), Point(0, 0)]),
+        Segmento(False, [Point(0, 0), Point(0, 500)])
+    ]
+
+    paredes = bordes + [
+	Segmento(False, [Point(0, 155), Point(68, 155)]),
+	Segmento(False, [Point(68, 155), Point(68, 183)]),
+	Segmento(False, [Point(68, 183), Point(0, 183)]),
+	Segmento(False, [Point(0, 13), Point(200, 13)]),
+	Segmento(False, [Point(200, 13), Point(200, 155)]),
+	Segmento(False, [Point(200, 155), Point(134, 155)]),
+	Segmento(False, [Point(134, 155), Point(134, 182)]),
+	Segmento(True, [Point(134, 182), Point(200, 182)]),
+	Segmento(False, [Point(200, 182), Point(300, 182)]),
+	Segmento(False, [Point(300, 182), Point(300, 155)]),
+	Segmento(False, [Point(300, 155), Point(233, 155)]),
+	Segmento(False, [Point(233, 155), Point(233, 13)]),
+	Segmento(False, [Point(233, 13), Point(465, 13)]),                   
+    	Segmento(False, [Point(465, 13), Point(465, 155)]),
+	Segmento(False, [Point(465, 155), Point(398, 155)]),
+	Segmento(False, [Point(398, 155), Point(398, 182)]),
+	Segmento(False, [Point(398, 182), Point(500, 182)]),
+	Segmento(False, [Point(0, 328), Point(35, 328)]),
+	Segmento(False, [Point(35, 328), Point(35, 386)]),     
+    	Segmento(False, [Point(35, 386), Point(167, 386)]),
+    	Segmento(False, [Point(167, 386), Point(167, 328)]),
+	Segmento(False, [Point(167, 328), Point(299, 328)]),
+	Segmento(False, [Point(299, 328), Point(299, 357)]),
+	Segmento(False, [Point(299, 357), Point(200, 357)]),
+	Segmento(False, [Point(200, 357), Point(200, 416)]),
+	Segmento(False, [Point(200, 416), Point(0, 416)]),                     
+    ]
+
+	FuentesdeLuz[Point(117, 339),Point(84, 339)]

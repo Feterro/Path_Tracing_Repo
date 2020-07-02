@@ -18,7 +18,7 @@ def getArrayImage():
 
     from PIL import Image
     import numpy as np
-    imgName = "Model/roomBleed2.png"
+    imgName = "Model/FondoFinal.png"
     # reference image for background color
     im_file = Image.open(imgName)
     ref = np.array(im_file)
