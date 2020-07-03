@@ -99,15 +99,24 @@ def makePoint(posicion, t, direccion):
     return point
 
 def pathTrace(luces, reflejos, paredes, blankImage, lucesEfectivas):
+    from time import time
     pixelesIndirecta = getImageBlank()
     pixelesDirecta = getImageBlank()
     matrizIntensidadDirecta = [[0] * 500] * 500
     matrizIntensidadIndirecta = [[0] * 500] * 500
     img = getArrayImage()
+    # Start counting.
+    start_time = time()
+
     luzDirecta(luces, blankImage, img, pixelesDirecta, matrizIntensidadDirecta)
     luzIndirecta(reflejos, blankImage, img, lucesEfectivas, pixelesIndirecta, matrizIntensidadIndirecta)
     luzGlobal(blankImage, lucesEfectivas, pixelesDirecta, pixelesIndirecta, luces, reflejos,
               matrizIntensidadDirecta, matrizIntensidadIndirecta)
+
+    # Calculate the elapsed time.
+    elapsed_time = time() - start_time
+    elapsed_time = "Elapsed time: %0.2f seconds." % elapsed_time
+    print(elapsed_time)
 
 def luzIndirecta(reflejos, blankImage, img, lucesEfectivas, pixelesIndirecta, matrizIntensidad):
     for reflejo in reflejos:
@@ -131,7 +140,6 @@ def luzIndirecta(reflejos, blankImage, img, lucesEfectivas, pixelesIndirecta, ma
             except IndexError:
                 print(px, py)
             color = (img[int(py)][int(px)])[:3]
-            #TODO se debe validar si el rayo es especular para no tomar el color de la pared
             colorWall2 = array([color / 100 for color in img[reflejo.posicion.y-1][reflejo.posicion.x-1][:3]])
             #color = color * intensity * colorWall2
             color = color * colorWall2  * math.acos(radians(reflejo.direccion.x))

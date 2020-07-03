@@ -1,7 +1,6 @@
 import threading
-
-from GUI.Window import Window
 import time
+from GUI.Window import Window
 from Model.Ray import *
 import Model.PathTracing as PT
 import Model.Funtions as FN
@@ -56,11 +55,9 @@ def MAINLOOP():
     reflejos=[]
 
     display.screen.fill((0, 0, 0))
-    for i in arange(0,360,0.1):
+    for i in arange(0,360,1):
         ray1 = Ray(pPosicion=Point(117, 339))
         ray2 = Ray(pPosicion=Point(84, 339))
-        #ray1.generarDir()
-        #ray2.generarDir()
         ray2.setDirectionFromAngle(i)
         ray1.setDirectionFromAngle(i)
 
@@ -89,16 +86,11 @@ def MAINLOOP():
     print("Rayos generados")
 
     t.start()
-    #threadPathTrace()
+
     for pared in paredes:
         display.drawSegment((0, 0, 255), pared)
-    '''for i in range(len(luces)):
-        luz = luces[i]
-        reflejo = reflejos[i]
-        display.drawLight(luz)
-        display.drawLight(reflejo)'''
+
     while True:
-        #display.screen.fill((255, 255, 255))
         display.drawImage(Img)
         time.sleep(0.01)
 
@@ -109,6 +101,7 @@ Img = None
 
 def threadPathTrace():
     PT.pathTrace(Luces, Reflejos, Paredes, Img, lucesEfectivas)
+
 
 t = threading.Thread(target = threadPathTrace) # f being the function that tells how the ball should move
 t.setDaemon(True) # Alternatively, you can use "t.daemon = True"
