@@ -55,7 +55,7 @@ def MAINLOOP():
     reflejos=[]
 
     display.screen.fill((0, 0, 0))
-    for i in arange(0,360,1):
+    for i in arange(0,360,0.2):
         ray1 = Ray(pPosicion=Point(117, 339))
         ray2 = Ray(pPosicion=Point(84, 339))
         ray2.setDirectionFromAngle(i)
@@ -64,14 +64,20 @@ def MAINLOOP():
         luces.append(ray1)
         luces.append(ray2)
 
-    for i in range(samples):
-        for ray in luces:
-            point = PT.intersectPoint(ray, paredes)
+        for i in range(samples):
+            point = PT.intersectPoint(ray1, paredes)
             if point is not None:
-                ray.setFinal(point)
-                reflejos += ray.rebotar(paredes)
-                ray.setFinal(point)
-                reflejos += ray.rebotar(paredes)
+                ray1.setFinal(point)
+                reflejos += ray1.rebotar(paredes)
+                ray1.setFinal(point)
+                reflejos += ray1.rebotar(paredes)
+
+            point2 = PT.intersectPoint(ray2, paredes)
+            if point2 is not None:
+                ray2.setFinal(point)
+                reflejos += ray2.rebotar(paredes)
+                ray2.setFinal(point)
+                reflejos += ray2.rebotar(paredes)
 
     test_list = deque(reflejos)
     test_list.rotate(len(reflejos)//2)

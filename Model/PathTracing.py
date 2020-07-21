@@ -125,20 +125,13 @@ def luzIndirecta(reflejos, blankImage, img, lucesEfectivas, pixelesIndirecta, ma
             px = puntosx[i] - 1
             py = puntosy[i] - 1
 
-            try:
-                lucesEfectivas[px][py] += 1
-            except IndexError:
-                print(px, py)
+            lucesEfectivas[px][py] += 1
             distanciaReflejo = pointsDistance(reflejo.posicion, Point(px, py))
             distanciaLuzDirecta = reflejo.distancia
             distanciaTotal = distanciaReflejo + distanciaLuzDirecta
 
             intensity = (1 - (distanciaTotal / 500)) ** 2
-
-            try:
-                matrizIntensidad[px][py] = max(matrizIntensidad[px][py], intensity)
-            except IndexError:
-                print(px, py)
+            matrizIntensidad[px][py] = max(matrizIntensidad[px][py], intensity)
             color = (img[int(py)][int(px)])[:3]
             colorWall2 = array([color / 100 for color in img[reflejo.posicion.y-1][reflejo.posicion.x-1][:3]])
             #color = color * intensity * colorWall2
